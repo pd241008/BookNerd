@@ -1,6 +1,7 @@
 package main
 
 import (
+	"book-reading-backend/cmd/api/lib"
 	"book-reading-backend/cmd/api/upload"
 	"fmt"
 	"log"
@@ -25,6 +26,8 @@ func main() {
 	fmt.Println("Aegis Reader API starting on Port 8080")
 
 	http.HandleFunc("/upload", enableCORS(upload.UploadFile))
+	http.HandleFunc("/books", enableCORS(lib.ListBooks))
+	http.HandleFunc("/book", enableCORS(lib.GetBook))
 	http.HandleFunc("/health", enableCORS(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "OK")
 	}))
