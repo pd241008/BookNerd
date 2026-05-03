@@ -1,48 +1,53 @@
 package upload
 
 import (
-    "fmt"
-    "io"
-    "log"
-    "net/http"
-    "os"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
 )
 
 func UploadFile(w http.ResponseWriter, r *http.Request) {
-    fmt.Println("File Upload Endpoint Hit")
+	fmt.Println("File Upload Endpoint Hit")
 
- 
-    r.ParseMultipartForm(10 << 20)
-   
-    file, handler, err := r.FormFile("myFile")
-    if err != nil {
-        fmt.Println("Error Retrieving the File")
-        fmt.Println(err)
-        return
-    }
-    defer file.Close()
-    fmt.Printf("Uploaded File: %+v\n", handler.Filename)
-    fmt.Printf("File Size: %+v\n", handler.Size)
-    fmt.Printf("MIME Header: %+v\n", handler.Header)
+	// Max upload size: 10 MB
+	r.ParseMultipartForm(10 << 20)
 
-  
-    tempFile, err := os.CreateTemp("temp-images", "upload-*.pdf")
-    if err != nil {
-        log.Fatalf("Error creating temp file: %v", err)
-    }
-    defer tempFile.Close()
+	file, handler, err := r.FormFile("myFile")
+	if err != nil {
+		fmt.Println("Error Retrieving the File")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
 
+	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
+	fmt.Printf("File Size: %+v\n", handler.Size)
+	fmt.Printf("MIME Header: %+v\n", handler.Header)
 
-    fileBytes, err := io.ReadAll(file)
-    if err != nil {
-        log.Fatalf("Error reading file: %v", err)
-    }
+	// Ensure data directory exists
+	dataDir := "data"
+	if _, err := os.Stat(dataDir); os.IsNotExist(err) {
+		os.Mkdir(dataDir, 0755)
+	}
 
-    _, err = tempFile.Write(fileBytes)
-    if err != nil {
-        log.Fatalf("Error writing to temp file: %v", err)
-    }
+	// Create the destination file in the data folder
+	dstPath := filepath.Join(dataDir, handler.Filename)
+	dst, err := os.Create(dstPath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer dst.Close()
 
-    fmt.Fprintf(w, "Successfully Uploaded File\n")
+	// Copy the uploaded file to the destination file efficiently
+	if _, err := io.Copy(dst, file); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Fprintf(w, `{"message": "Successfully Uploaded File", "filename": "%s", "id": "%d"}`, handler.Filename, handler.Size)
 }
 
