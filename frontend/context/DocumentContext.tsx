@@ -8,6 +8,7 @@ type DocumentContextType = {
   documents: Document[];
   addDocument: (doc: Document) => void;
   updateDocument: (id: string, data: Partial<Document>) => void;
+  removeDocument: (id: string) => void;
 };
 
 const DocumentContext = createContext<DocumentContextType | null>(null);
@@ -26,9 +27,12 @@ export const DocumentProvider = ({
       prev.map((d) => (d.id === id ? { ...d, ...data } : d))
     );
 
+  const removeDocument = (id: string) =>
+    setDocuments((prev) => prev.filter((d) => d.id !== id));
+
   return (
     <DocumentContext.Provider
-      value={{ documents, addDocument, updateDocument }}>
+      value={{ documents, addDocument, updateDocument, removeDocument }}>
       {children}
     </DocumentContext.Provider>
   );
