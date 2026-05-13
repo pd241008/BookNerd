@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package book_service;
+
+option go_package = "./proto/book_service";
+
+service BookService {
+  rpc ListBooks(ListBooksRequest) returns (ListBooksResponse);
+  rpc GetBook(GetBookRequest) returns (Book);
+  rpc UploadBook(UploadBookRequest) returns (UploadBookResponse);
+  rpc DeleteBook(DeleteBookRequest) returns (DeleteBookResponse);
+}
+
+message Book {
+  string id = 1;
+  string name = 2;
+  string type = 3;
+  string upload_date = 4;
+  string file_url = 5;
+  int64 size = 6;
+  StorageType storage_type = 7;
+}
+
+enum StorageType {
+  STORAGE_TYPE_UNSPECIFIED = 0;
+  STORAGE_TYPE_STANDARD = 1; // Persistent
+  STORAGE_TYPE_SESSION = 2;  // Non-persistent
+}
+
+message ListBooksRequest {
+  StorageType filter_storage = 1;
+}
+
+message ListBooksResponse {
+  repeated Book books = 1;
+}
+
+message GetBookRequest {
+  string id = 1;
+}
+
+message UploadBookRequest {
+  string name = 1;
+  bytes content = 2;
+  StorageType storage_type = 3;
+}
+
+message UploadBookResponse {
+  Book book = 1;
+  bool success = 2;
+}
+
+message DeleteBookRequest {
+  string id = 1;
+}
+
+message DeleteBookResponse {
+  bool success = 1;
+}
