@@ -5,8 +5,8 @@ import Link from "next/link";
 import { BookOpen } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Aegis | Book Reader",
-  description: "Experience reading like never before with Aegis.",
+  title: "Biblio | Book Reader",
+  description: "Experience reading like never before with Biblio.",
 };
 
 export default function RootLayout({
@@ -24,11 +24,12 @@ export default function RootLayout({
                 <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(37,99,235,0.4)]">
                   <BookOpen className="text-white w-6 h-6" />
                 </div>
-                <span className="text-xl font-bold tracking-tight text-white">AEGIS</span>
+                <span className="text-xl font-bold tracking-tight text-white">BIBLIO</span>
               </Link>
               <div className="flex items-center gap-8">
                 <Link href="/" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">Home</Link>
                 <Link href="/gallery" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">Library</Link>
+                <Link href="/upload" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">Upload</Link>
                 <button className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-blue-900/20 active:scale-95">
                   Get Started
                 </button>

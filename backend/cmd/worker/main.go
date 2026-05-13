@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Aegis Reader Worker starting...")
+	fmt.Println("Biblio Reader Worker starting...")
 	
 	for {
 		fmt.Println("Processing background tasks...")

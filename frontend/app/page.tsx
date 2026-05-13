@@ -46,6 +46,7 @@ export default function HomePage() {
         type: "document",
         uploadDate: new Date().toISOString().split("T")[0],
         fileUrl: URL.createObjectURL(selectedFile),
+        storageType: "standard",
       });
 
       setMessage({ type: "success", text: `Successfully uploaded: ${name}` });
@@ -75,7 +76,7 @@ export default function HomePage() {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-500 leading-tight">
-            Read Smarter with <span className="glow-text text-blue-500">Aegis</span>
+            Read Smarter with <span className="glow-text text-blue-500">Biblio</span>
           </h1>
           
           <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12">
@@ -121,96 +122,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Upload Section */}
-      <section id="upload-section" className="py-24 bg-slate-950/50">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Add Your Collection</h2>
-            <p className="text-slate-400">Upload your PDF documents to begin your reading journey.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <div className="flex gap-4">
-                <div className="shrink-0 w-6 h-6 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mt-1">
-                  <CheckCircle2 className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white">Automatic Metadata</h4>
-                  <p className="text-sm text-slate-400">We automatically extract titles and authors from your PDFs.</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="shrink-0 w-6 h-6 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mt-1">
-                  <CheckCircle2 className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white">High Resolution</h4>
-                  <p className="text-sm text-slate-400">Crisp rendering across all devices, from mobile to desktop.</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="shrink-0 w-6 h-6 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mt-1">
-                  <CheckCircle2 className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white">Offline Access</h4>
-                  <p className="text-sm text-slate-400">Read your books even when you're not connected to the internet.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="glass-morphism p-8 rounded-3xl border border-white/10 shadow-2xl">
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-slate-300">Book Title</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Foundation - Isaac Asimov"
-                    value={name}
-                    disabled={isUploading}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-slate-900/50 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-white"
-                  />
-                </div>
-
-                <div 
-                  onClick={() => !isUploading && fileRef.current?.click()}
-                  className={`border-2 border-dashed rounded-2xl p-10 flex flex-col items-center justify-center cursor-pointer transition-all ${
-                    isUploading ? "opacity-50 cursor-not-allowed border-slate-800" : "border-slate-800 hover:border-blue-500/50 hover:bg-blue-500/5"
-                  }`}
-                >
-                  <input
-                    ref={fileRef}
-                    type="file"
-                    accept=".pdf"
-                    className="hidden"
-                    onChange={(e) => {
-                      const selected = e.target.files?.[0];
-                      if (selected) handleUpload(selected);
-                    }}
-                  />
-                  <div className="w-16 h-16 bg-blue-500/10 text-blue-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-12 transition-transform">
-                    <Upload className="w-8 h-8" />
-                  </div>
-                  <p className="font-bold text-white text-lg">
-                    {isUploading ? "Processing..." : "Drop PDF here"}
-                  </p>
-                  <p className="text-sm text-slate-500 mt-2">or click to browse files</p>
-                </div>
-
-                {message && (
-                  <div className={`p-4 rounded-xl text-sm animate-fade-in ${
-                    message.type === "success" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                  }`}>
-                    {message.text}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+     
 
       {/* Footer */}
       <footer className="py-12 border-t border-white/5">
@@ -219,10 +131,10 @@ export default function HomePage() {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <Shield className="text-white w-5 h-5" />
             </div>
-            <span className="font-bold text-white">AEGIS</span>
+            <span className="font-bold text-white">BIBLIO</span>
           </div>
           <p className="text-slate-500 text-sm">
-            © 2026 Aegis Book Reader. All rights reserved.
+            © 2026 Biblio Book Reader. All rights reserved.
           </p>
           <div className="flex gap-8">
             <a href="#" className="text-sm text-slate-500 hover:text-white transition-colors">Privacy</a>

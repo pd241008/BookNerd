@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func UploadFile(w http.ResponseWriter, r *http.Request) {
@@ -21,10 +22,24 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer file.Close()
-
 	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
 	fmt.Printf("File Size: %+v\n", handler.Size)
 	fmt.Printf("MIME Header: %+v\n", handler.Header)
+
+
+
+	// 2. Extract and normalize the extension
+	ext := strings.ToLower(filepath.Ext(handler.Filename))
+
+	if ext != ".pdf" && ext != ".docx" {
+
+		fmt.Printf("Uploaded File Has Invalid Format: %s\n", ext)
+
+		http.Error(w, "Invalid file format. Only PDF and DOCX are allowed.", http.StatusUnsupportedMediaType)
+		return
+	}
+
+	fmt.Printf("File %s extension is valid!\n", handler.Filename)
 
 	dataDir := "data"
 	if _, err := os.Stat(dataDir); os.IsNotExist(err) {

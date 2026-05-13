@@ -5,7 +5,7 @@ import { useDocuments } from "@/context/DocumentContext";
 import { Search, Book, Calendar, Trash2, ExternalLink, Ghost } from "lucide-react";
 
 export default function GalleryPage() {
-  const { documents, removeDocument } = useDocuments();
+  const { documents, removeDocument, resetSession } = useDocuments();
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredDocs = documents.filter(doc => 
@@ -21,15 +21,27 @@ export default function GalleryPage() {
             <p className="text-slate-400">Manage and read your collection of books.</p>
           </div>
           
-          <div className="relative max-w-md w-full">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5" />
-            <input 
-              type="text" 
-              placeholder="Search books..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-            />
+          <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+            <div className="relative max-w-md w-full">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5" />
+              <input 
+                type="text" 
+                placeholder="Search books..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+              />
+            </div>
+            <button 
+              onClick={() => {
+                if(confirm("Are you sure you want to reset the session? This will clear all non-persistent books.")) {
+                  resetSession();
+                }
+              }}
+              className="px-5 py-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white transition-all text-sm font-medium whitespace-nowrap"
+            >
+              Reset Session
+            </button>
           </div>
         </header>
 
@@ -68,9 +80,20 @@ export default function GalleryPage() {
                   <h3 className="font-bold text-white text-lg mb-2 truncate group-hover:text-blue-400 transition-colors">
                     {doc.name}
                   </h3>
-                  <div className="flex items-center text-sm text-slate-500 gap-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>Uploaded: {doc.uploadDate}</span>
+                  <div className="flex items-center justify-between mt-3">
+                    <div className="flex items-center text-sm text-slate-500 gap-2">
+                      <Calendar className="w-4 h-4" />
+                      <span>{doc.uploadDate}</span>
+                    </div>
+                    {doc.storageType && (
+                      <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-bold border ${
+                        doc.storageType === "standard" 
+                          ? "bg-amber-500/10 text-amber-500 border-amber-500/20" 
+                          : "bg-blue-500/10 text-blue-500 border-blue-500/20"
+                      }`}>
+                        {doc.storageType}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

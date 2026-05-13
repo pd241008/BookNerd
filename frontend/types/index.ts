@@ -1,3 +1,5 @@
+export type StorageType = "standard" | "persistent";
+
 export interface Document {
   id: string;
   name: string;
@@ -5,4 +7,5 @@ export interface Document {
   uploadDate: string;
   fileUrl: string;
   expiryDate?: string;
+  storageType?: StorageType;
 }
