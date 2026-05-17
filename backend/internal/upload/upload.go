@@ -2,11 +2,11 @@ package upload
 
 import (
 	"fmt"
-	"io"
 	"net/http"
-	"os"
 	"path/filepath"
 	"strings"
+
+	"book-reading-backend/internal/storage"
 )
 
 func UploadFile(w http.ResponseWriter, r *http.Request) {
@@ -41,30 +41,14 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("File %s extension is valid!\n", handler.Filename)
 
-	dataDir := "data"
-
-	if _, err := os.Stat(dataDir); os.IsNotExist(err) {
-		if err := os.Mkdir(dataDir, 0755); err != nil {
-			http.Error(w, "Failed to create data directory", http.StatusInternalServerError)
-			return
-		}
-	}
-
-	dstPath := filepath.Join(dataDir, handler.Filename)
-	dst, err := os.Create(dstPath)
+	// Delegate saving logic to our master state manager!
+	meta, err := storage.SaveFile(r.Context(), handler.Filename, file, handler.Size)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	defer func() {
-		_ = dst.Close()
-	}()
-
-	if _, err := io.Copy(dst, file); err != nil {
+		fmt.Println("Error saving file:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, `{"message": "Successfully Uploaded File", "filename": "%s", "id": "%d"}`, handler.Filename, handler.Size)
+	fmt.Fprintf(w, `{"message": "Successfully Uploaded File", "filename": "%s", "size": "%d", "path": "%s"}`, meta.Name, meta.Size, strings.ReplaceAll(meta.Path, "\\", "\\\\"))
 }

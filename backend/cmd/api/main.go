@@ -1,8 +1,8 @@
 package main
 
 import (
-	"book-reading-backend/cmd/api/lib"
-	"book-reading-backend/cmd/api/upload"
+	"book-reading-backend/internal/lib"
+	"book-reading-backend/internal/upload"
 	"fmt"
 	"log"
 	"net/http"
