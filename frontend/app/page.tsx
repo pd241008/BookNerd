@@ -1,148 +1,386 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { useDocuments } from "@/context/DocumentContext";
-import { Upload, Shield, Zap, Layout, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
+import {
+  ArrowRight,
+  BookOpen,
+  Shield,
+  Zap,
+  Layers,
+  Compass,
+  Upload,
+  Eye,
+  Sparkles,
+} from "lucide-react";
 
 export default function HomePage() {
-  const { addDocument } = useDocuments();
-  const fileRef = useRef<HTMLInputElement>(null);
+  // Intersection observer for scroll-triggered animations
+  const observedRef = useRef<HTMLDivElement>(null);
 
-  const [name, setName] = useState("");
-  const [isUploading, setIsUploading] = useState(false);
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-slide-up");
+            entry.target.classList.remove("opacity-0");
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+    );
 
-  const handleUpload = async (selectedFile: File) => {
-    if (!name) {
-      setMessage({ type: "error", text: "Please enter a document name first." });
-      if (fileRef.current) fileRef.current.value = "";
-      return;
-    }
-
-    setIsUploading(true);
-    setMessage(null);
-
-    try {
-      const formData = new FormData();
-      formData.append("myFile", selectedFile);
-      formData.append("name", name);
-
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080/upload";
-      const response = await fetch(backendUrl, {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Upload failed.");
-      }
-
-      addDocument({
-        id: data.id || Date.now().toString(),
-        name,
-        type: "document",
-        uploadDate: new Date().toISOString().split("T")[0],
-        fileUrl: URL.createObjectURL(selectedFile),
-        storageType: "standard",
-      });
-
-      setMessage({ type: "success", text: `Successfully uploaded: ${name}` });
-      setName("");
-      if (fileRef.current) fileRef.current.value = "";
-    } catch (error) {
-      console.error("Upload error:", error);
-      setMessage({ type: "error", text: error instanceof Error ? error.message : "Upload failed" });
-    } finally {
-      setIsUploading(false);
-    }
-  };
+    const sections = document.querySelectorAll("[data-animate]");
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative pt-20 pb-32 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-blue-600/20 to-transparent blur-3xl -z-10" />
-        
+    <main className="min-h-screen overflow-hidden">
+      {/* ======== HERO SECTION ======== */}
+      <section className="relative pt-16 pb-32">
+        {/* Background effects */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-radial from-indigo-600/12 via-purple-600/5 to-transparent blur-3xl -z-10" />
+        <div className="absolute top-40 right-0 w-[400px] h-[400px] bg-gradient-radial from-indigo-500/6 to-transparent blur-3xl -z-10" />
+
         <div className="max-w-7xl mx-auto px-6 text-center animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-8">
+          {/* Status Badge */}
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-indigo-500/8 border border-indigo-500/15 mb-10">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-60"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
             </span>
-            New: Enhanced PDF Rendering
+            <span className="text-indigo-300 text-xs font-medium tracking-wide">
+              Now with multi-source discovery
+            </span>
           </div>
-          
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-500 leading-tight">
-            Read Smarter with <span className="glow-text text-blue-500">Biblio</span>
+
+          {/* Headline */}
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter mb-7 leading-[0.95]">
+            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-slate-500">
+              Read Everything.
+            </span>
+            <br />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 animate-gradient glow-text">
+              One Place.
+            </span>
           </h1>
-          
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12">
-            The ultimate digital library for your PDF collection. Fast, secure, and accessible anywhere.
+
+          {/* Subtitle */}
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+            Upload your books, discover new ones from multiple sources, and read
+            them all in a beautifully crafted reader. Dark mode, bookmarks,
+            progress tracking — everything you need.
           </p>
 
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-20">
-            <Link href="/gallery" className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 transition-all group shadow-xl shadow-blue-900/40">
-              Browse Library <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <button 
-              onClick={() => document.getElementById('upload-section')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 rounded-xl font-bold border border-slate-700 hover:bg-slate-800 transition-all text-slate-300"
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24">
+            <Link
+              href="/gallery"
+              className="btn-primary text-base px-8 py-4 group"
             >
-              Start Uploading
-            </button>
+              Browse Library
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link href="/sources" className="btn-ghost text-base px-8 py-4">
+              <Compass className="w-5 h-5" />
+              Discover Sources
+            </Link>
           </div>
 
-          {/* Feature Grid Preview */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-            <div className="glass-morphism p-8 rounded-2xl border border-white/5 group hover:border-blue-500/50 transition-colors">
-              <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-500 mb-6 group-hover:scale-110 transition-transform">
-                <Shield className="w-6 h-6" />
+          {/* Feature Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left stagger-children">
+            <FeatureCard
+              icon={<Shield className="w-6 h-6" />}
+              title="Secure Storage"
+              description="Choose between local or S3 cloud storage. Your books, your rules."
+            />
+            <FeatureCard
+              icon={<Zap className="w-6 h-6" />}
+              title="Blazing Fast"
+              description="Byte-range streaming loads only what you need. Even 500-page PDFs open instantly."
+            />
+            <FeatureCard
+              icon={<Layers className="w-6 h-6" />}
+              title="Multi-Source"
+              description="Pull content from MangaDex, Open Library, and more. One search, many sources."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ======== HOW IT WORKS ======== */}
+      <section className="py-28 section-glow" data-animate>
+        <div className="max-w-7xl mx-auto px-6 opacity-0">
+          <div className="text-center mb-16">
+            <span className="badge badge-accent mb-4">How It Works</span>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+              Three steps to reading bliss
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <StepCard
+              number="01"
+              icon={<Upload className="w-7 h-7" />}
+              title="Upload or Discover"
+              description="Drag-and-drop your PDFs, or search across multiple online sources to find your next read."
+            />
+            <StepCard
+              number="02"
+              icon={<BookOpen className="w-7 h-7" />}
+              title="Read Beautifully"
+              description="Open books in our custom reader with dark mode, pagination, zoom, and distraction-free fullscreen."
+            />
+            <StepCard
+              number="03"
+              icon={<Eye className="w-7 h-7" />}
+              title="Track Progress"
+              description="Bookmark pages, see your reading progress, and pick up exactly where you left off."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ======== READER PREVIEW ======== */}
+      <section className="py-28" data-animate>
+        <div className="max-w-7xl mx-auto px-6 opacity-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <span className="badge badge-accent mb-4">The Reader</span>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-6">
+                Built for long
+                <br />
+                reading sessions
+              </h2>
+              <p className="text-slate-400 text-lg leading-relaxed mb-8">
+                Every detail is designed for comfort. Switch between light, dark,
+                and sepia modes. Adjust font size, line spacing, and reading
+                width. Navigate with keyboard shortcuts or the table of contents.
+              </p>
+
+              <div className="space-y-4">
+                <ReaderFeature
+                  icon={<Sparkles className="w-4 h-4" />}
+                  label="Dark, Light & Sepia modes"
+                />
+                <ReaderFeature
+                  icon={<Sparkles className="w-4 h-4" />}
+                  label="Keyboard navigation (←/→ or j/k)"
+                />
+                <ReaderFeature
+                  icon={<Sparkles className="w-4 h-4" />}
+                  label="Bookmarks & reading progress"
+                />
+                <ReaderFeature
+                  icon={<Sparkles className="w-4 h-4" />}
+                  label="Table of contents sidebar"
+                />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Secure Storage</h3>
-              <p className="text-slate-400 leading-relaxed">Your books are encrypted and safely stored in your private digital vault.</p>
+
+              <div className="mt-10">
+                <Link href="/gallery" className="btn-primary">
+                  Try the Reader
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
-            <div className="glass-morphism p-8 rounded-2xl border border-white/5 group hover:border-blue-500/50 transition-colors">
-              <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-500 mb-6 group-hover:scale-110 transition-transform">
-                <Zap className="w-6 h-6" />
+
+            {/* Reader Mockup */}
+            <div className="relative">
+              <div className="card p-1 overflow-hidden">
+                <div className="bg-[#1a1a2e] rounded-[16px] overflow-hidden">
+                  {/* Toolbar mockup */}
+                  <div className="flex items-center justify-between px-5 py-3 border-b border-white/5">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                      <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                    </div>
+                    <span className="text-xs text-slate-500 font-mono">
+                      reader — The Great Gatsby
+                    </span>
+                    <div className="flex items-center gap-3 text-slate-600">
+                      <span className="text-[10px]">☾</span>
+                      <span className="text-[10px]">🔍</span>
+                    </div>
+                  </div>
+                  {/* Page content mockup */}
+                  <div className="px-12 py-10 min-h-[320px]">
+                    <p className="text-slate-300 text-sm leading-[1.9] font-serif">
+                      In my younger and more vulnerable years my father gave me
+                      some advice that I&apos;ve been turning over in my mind ever
+                      since.
+                    </p>
+                    <p className="text-slate-300 text-sm leading-[1.9] font-serif mt-4">
+                      &ldquo;Whenever you feel like criticizing anyone,&rdquo; he told
+                      me, &ldquo;just remember that all the people in this world
+                      haven&apos;t had the advantages that you&apos;ve had.&rdquo;
+                    </p>
+                    <p className="text-slate-400/50 text-sm leading-[1.9] font-serif mt-4">
+                      He didn&apos;t say any more, but we&apos;ve always been
+                      unusually communicative in a reserved way, and I understood
+                      that he meant a great deal more than that...
+                    </p>
+                  </div>
+                  {/* Bottom bar */}
+                  <div className="flex items-center justify-between px-5 py-3 border-t border-white/5">
+                    <span className="text-[10px] text-slate-600 font-mono">
+                      ◄ Page 3 of 180 ►
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-24 h-1 bg-slate-800 rounded-full overflow-hidden">
+                        <div className="w-[6%] h-full bg-indigo-500 rounded-full" />
+                      </div>
+                      <span className="text-[10px] text-slate-600">2%</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Blazing Fast</h3>
-              <p className="text-slate-400 leading-relaxed">Instantly load even the largest PDF files with our optimized rendering engine.</p>
-            </div>
-            <div className="glass-morphism p-8 rounded-2xl border border-white/5 group hover:border-blue-500/50 transition-colors">
-              <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-500 mb-6 group-hover:scale-110 transition-transform">
-                <Layout className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Beautiful UI</h3>
-              <p className="text-slate-400 leading-relaxed">A clean, distraction-free interface designed specifically for long reading sessions.</p>
+              {/* Glow behind card */}
+              <div className="absolute -inset-10 bg-gradient-radial from-indigo-500/8 to-transparent -z-10 blur-2xl" />
             </div>
           </div>
         </div>
       </section>
 
-     
+      {/* ======== CTA SECTION ======== */}
+      <section className="py-28" data-animate>
+        <div className="max-w-4xl mx-auto px-6 text-center opacity-0">
+          <div className="card p-16 relative overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute -top-20 -right-20 w-60 h-60 bg-indigo-500/10 rounded-full blur-[80px]" />
+            <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-purple-500/10 rounded-full blur-[80px]" />
 
-      {/* Footer */}
-      <footer className="py-12 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <Shield className="text-white w-5 h-5" />
+            <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4 relative z-10">
+              Ready to start reading?
+            </h2>
+            <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto relative z-10">
+              Upload your first book or discover content from your favorite
+              sources. It&apos;s free and always will be.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
+              <Link
+                href="/upload"
+                className="btn-primary text-base px-8 py-4"
+              >
+                Upload Your First Book
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                href="/sources"
+                className="btn-ghost text-base px-8 py-4"
+              >
+                Explore Sources
+              </Link>
             </div>
-            <span className="font-bold text-white">BIBLIO</span>
           </div>
-          <p className="text-slate-500 text-sm">
-            © 2026 Biblio Book Reader. All rights reserved.
+        </div>
+      </section>
+
+      {/* ======== FOOTER ======== */}
+      <footer className="py-12 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <BookOpen className="text-white w-4 h-4" />
+            </div>
+            <span className="font-bold text-white tracking-tight">BIBLIO</span>
+          </div>
+          <p className="text-slate-600 text-sm">
+            © {new Date().getFullYear()} Biblio Reader. Built with care.
           </p>
           <div className="flex gap-8">
-            <a href="#" className="text-sm text-slate-500 hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="text-sm text-slate-500 hover:text-white transition-colors">Terms</a>
-            <a href="#" className="text-sm text-slate-500 hover:text-white transition-colors">Support</a>
+            <a
+              href="#"
+              className="text-sm text-slate-600 hover:text-white transition-colors"
+            >
+              Privacy
+            </a>
+            <a
+              href="#"
+              className="text-sm text-slate-600 hover:text-white transition-colors"
+            >
+              Terms
+            </a>
+            <a
+              href="#"
+              className="text-sm text-slate-600 hover:text-white transition-colors"
+            >
+              GitHub
+            </a>
           </div>
         </div>
       </footer>
     </main>
+  );
+}
+
+/* ============================================================
+   SUB-COMPONENTS
+   ============================================================ */
+
+function FeatureCard({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="card p-8 group">
+      <div className="w-12 h-12 bg-indigo-500/8 rounded-xl flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 group-hover:bg-indigo-500/15 transition-all">
+        {icon}
+      </div>
+      <h3 className="text-xl font-bold mb-3 text-white">{title}</h3>
+      <p className="text-slate-400 leading-relaxed text-[0.95rem]">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+function StepCard({
+  number,
+  icon,
+  title,
+  description,
+}: {
+  number: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="relative card p-8 group">
+      <span className="absolute top-6 right-6 text-5xl font-black text-white/3 select-none">
+        {number}
+      </span>
+      <div className="w-14 h-14 bg-gradient-to-br from-indigo-500/15 to-purple-500/10 rounded-2xl flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 transition-transform">
+        {icon}
+      </div>
+      <h3 className="text-lg font-bold mb-3 text-white">{title}</h3>
+      <p className="text-slate-400 leading-relaxed text-sm">{description}</p>
+    </div>
+  );
+}
+
+function ReaderFeature({
+  icon,
+  label,
+}: {
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="flex items-center gap-3 text-slate-300">
+      <div className="w-7 h-7 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+        {icon}
+      </div>
+      <span className="text-sm font-medium">{label}</span>
+    </div>
   );
 }

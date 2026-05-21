@@ -2,18 +2,27 @@ import { Document } from "@/types";
 
 export const sampleDocuments: Document[] = [
   {
-    id: "1",
-    name: "Driving License",
-    type: "license",
-    uploadDate: "2025-01-01",
-    expiryDate: "2026-01-01",
-    fileUrl: "https://via.placeholder.com/300x180.png?text=License",
+    id: "sample-1",
+    name: "The Great Gatsby",
+    type: "novel",
+    uploadDate: "2026-01-15",
+    fileUrl: "#",
+    storageType: "standard",
   },
   {
-    id: "2",
-    name: "Insurance Policy",
-    type: "insurance",
-    uploadDate: "2025-02-01",
-    fileUrl: "https://via.placeholder.com/300x180.png?text=Insurance",
+    id: "sample-2",
+    name: "1984 — George Orwell",
+    type: "novel",
+    uploadDate: "2026-02-10",
+    fileUrl: "#",
+    storageType: "standard",
+  },
+  {
+    id: "sample-3",
+    name: "Clean Code: A Handbook of Agile Software Craftsmanship",
+    type: "technical",
+    uploadDate: "2026-03-05",
+    fileUrl: "#",
+    storageType: "standard",
   },
 ];
