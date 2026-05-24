@@ -24,7 +24,7 @@ func enableCORS(next http.HandlerFunc) http.HandlerFunc {
 }
 
 func main() {
-	fmt.Println("Biblio Reader API starting on Port 8080")
+	fmt.Println("SourceEngine Reader API starting on Port 8080")
 
 	http.HandleFunc("/upload", enableCORS(upload.UploadFile))
 	http.HandleFunc("/books", enableCORS(lib.ListBooks))

@@ -4,7 +4,7 @@ import { DocumentProvider } from "@/context/DocumentContext";
 import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "Biblio | Your Ultimate Reading Companion",
+  title: "SourceEngine | Your Ultimate Reading Companion",
   description:
     "Upload, read, and discover books from multiple sources. A premium reading experience with dark mode, pagination, and more.",
 };

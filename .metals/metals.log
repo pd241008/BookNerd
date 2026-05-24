@@ -4,3 +4,14 @@
 2026.05.21 16:02:48 INFO  no build target found for /root/workspace/workspace/03-Code/Projects/Legacy/Projects/Book Reading Website/biblio-source-engine/build.sbt. Using presentation compiler with project's scala-library version: 3.3.7[0m
 May 21, 2026 4:02:52 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2026.05.21 16:08:21 INFO  no build target found for /root/workspace/workspace/03-Code/Projects/Legacy/Projects/Book Reading Website/biblio-source-engine/build.sbt. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.05.21 16:08:21 INFO  no build target found for /root/workspace/workspace/03-Code/Projects/Legacy/Projects/Book Reading Website/biblio-source-engine/src/main/scala/biblio/Main.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.05.21 16:08:21 INFO  no build target found for /root/workspace/workspace/03-Code/Projects/Legacy/Projects/Book Reading Website/biblio-source-engine/src/main/scala/biblio/cache/InMemoryCache.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.05.21 16:08:21 INFO  no build target found for /root/workspace/workspace/03-Code/Projects/Legacy/Projects/Book Reading Website/biblio-source-engine/src/main/scala/biblio/clients/MangaDexClient.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.05.21 16:08:21 INFO  no build target found for /root/workspace/workspace/03-Code/Projects/Legacy/Projects/Book Reading Website/biblio-source-engine/src/main/scala/biblio/clients/SourceClient.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.05.21 16:08:21 INFO  no build target found for /root/workspace/workspace/03-Code/Projects/Legacy/Projects/Book Reading Website/biblio-source-engine/src/main/scala/biblio/models/Source.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.05.21 16:08:21 INFO  no build target found for /root/workspace/workspace/03-Code/Projects/Legacy/Projects/Book Reading Website/biblio-source-engine/src/main/scala/biblio/routes/SourceRoutes.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.05.21 16:18:57 INFO  Shutting down server[0m
+2026.05.21 16:18:57 INFO  Memory monitor stopped[0m
+2026.05.21 16:18:57 INFO  shutting down Metals[0m
+2026.05.21 16:18:57 INFO  Exiting server[0m

@@ -1,11 +1,11 @@
-package biblio.routes
+package source_engine.routes
 
 import cats.effect.IO
 import org.http4s.*
 import org.http4s.dsl.io.*
 import org.http4s.circe.CirceEntityCodec.*
 
-import biblio.models.Source.*
+import source_engine.models.Source.*
 
 object SourceRoutes:
 
@@ -29,7 +29,7 @@ object SourceRoutes:
 
     // Health check
     case GET -> Root / "api" / "health" =>
-      Ok("""{"status": "ok", "service": "biblio-source-aggregator"}""")
+      Ok("""{"status": "ok", "service": "source_engine-source-aggregator"}""")
 
   object QMatcher extends QueryParamDecoderMatcher[String]("q")
   object UrlMatcher extends QueryParamDecoderMatcher[String]("url")

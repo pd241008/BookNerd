@@ -1,4 +1,4 @@
-package biblio
+package source_engine
 
 import cats.effect.{IO, IOApp}
 import org.http4s.ember.server.EmberServerBuilder
@@ -6,7 +6,7 @@ import com.comcast.ip4s.*
 import org.typelevel.log4cats.LoggerFactory
 import org.typelevel.log4cats.slf4j.Slf4jFactory
 
-import biblio.routes.SourceRoutes
+import source_engine.routes.SourceRoutes
 
 object Main extends IOApp.Simple:
 

@@ -50,7 +50,7 @@ export function Navbar() {
             <BookOpen className="text-white w-5 h-5" />
           </div>
           <span className="text-xl font-bold tracking-tight text-white">
-            BIBLIO
+            SOURCE_ENGINE
           </span>
         </Link>
 

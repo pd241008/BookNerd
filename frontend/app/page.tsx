@@ -286,10 +286,10 @@ export default function HomePage() {
             <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
               <BookOpen className="text-white w-4 h-4" />
             </div>
-            <span className="font-bold text-white tracking-tight">BIBLIO</span>
+            <span className="font-bold text-white tracking-tight">SOURCE_ENGINE</span>
           </div>
           <p className="text-slate-600 text-sm">
-            © {new Date().getFullYear()} Biblio Reader. Built with care.
+            © {new Date().getFullYear()} SourceEngine Reader. Built with care.
           </p>
           <div className="flex gap-8">
             <a

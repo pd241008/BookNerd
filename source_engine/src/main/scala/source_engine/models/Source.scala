@@ -1,4 +1,4 @@
-package biblio.models
+package source_engine.models
 
 import io.circe.{Encoder, Decoder}
 import io.circe.generic.semiauto.*

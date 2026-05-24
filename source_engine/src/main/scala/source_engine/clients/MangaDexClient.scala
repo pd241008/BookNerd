@@ -1,8 +1,8 @@
-package biblio.clients
+package source_engine.clients
 
 import cats.effect.IO
 
-import biblio.models.Source.*
+import source_engine.models.Source.*
 
 /**
  * MangaDex API client.

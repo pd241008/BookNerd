@@ -58,7 +58,7 @@ const DEFAULT_SETTINGS: ReaderSettings = {
 function loadSettings(): ReaderSettings {
   if (typeof window === "undefined") return DEFAULT_SETTINGS;
   try {
-    const saved = localStorage.getItem("biblio_reader_settings");
+    const saved = localStorage.getItem("source_engine_reader_settings");
     return saved ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) } : DEFAULT_SETTINGS;
   } catch {
     return DEFAULT_SETTINGS;
@@ -67,13 +67,13 @@ function loadSettings(): ReaderSettings {
 
 function saveSettings(settings: ReaderSettings) {
   if (typeof window === "undefined") return;
-  localStorage.setItem("biblio_reader_settings", JSON.stringify(settings));
+  localStorage.setItem("source_engine_reader_settings", JSON.stringify(settings));
 }
 
 function loadBookmarks(bookId: string): number[] {
   if (typeof window === "undefined") return [];
   try {
-    const saved = localStorage.getItem(`biblio_bookmarks_${bookId}`);
+    const saved = localStorage.getItem(`source_engine_bookmarks_${bookId}`);
     return saved ? JSON.parse(saved) : [];
   } catch {
     return [];
@@ -82,13 +82,13 @@ function loadBookmarks(bookId: string): number[] {
 
 function saveBookmarks(bookId: string, pages: number[]) {
   if (typeof window === "undefined") return;
-  localStorage.setItem(`biblio_bookmarks_${bookId}`, JSON.stringify(pages));
+  localStorage.setItem(`source_engine_bookmarks_${bookId}`, JSON.stringify(pages));
 }
 
 function loadReadingProgress(bookId: string): number {
   if (typeof window === "undefined") return 1;
   try {
-    const saved = localStorage.getItem(`biblio_progress_${bookId}`);
+    const saved = localStorage.getItem(`source_engine_progress_${bookId}`);
     return saved ? parseInt(saved, 10) : 1;
   } catch {
     return 1;
@@ -97,7 +97,7 @@ function loadReadingProgress(bookId: string): number {
 
 function saveReadingProgress(bookId: string, page: number) {
   if (typeof window === "undefined") return;
-  localStorage.setItem(`biblio_progress_${bookId}`, String(page));
+  localStorage.setItem(`source_engine_progress_${bookId}`, String(page));
 }
 
 export default function ReaderPage() {

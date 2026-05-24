@@ -1,4 +1,4 @@
-package biblio.cache
+package source_engine.cache
 
 import cats.effect.IO
 import scala.collection.concurrent.TrieMap

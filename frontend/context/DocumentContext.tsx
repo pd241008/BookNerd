@@ -24,7 +24,7 @@ export const DocumentProvider = ({
 
   // Initialize from sessionStorage to handle refreshes, but clearable
   useEffect(() => {
-    const saved = sessionStorage.getItem("biblio_docs");
+    const saved = sessionStorage.getItem("source_engine_docs");
     if (saved) {
       setDocuments(JSON.parse(saved));
     } else {
@@ -37,7 +37,7 @@ export const DocumentProvider = ({
   // Save to sessionStorage whenever documents change
   useEffect(() => {
     if (isInitialized) {
-      sessionStorage.setItem("biblio_docs", JSON.stringify(documents));
+      sessionStorage.setItem("source_engine_docs", JSON.stringify(documents));
     }
   }, [documents, isInitialized]);
 
@@ -55,7 +55,7 @@ export const DocumentProvider = ({
     setDocuments((prev) => prev.filter((d) => d.id !== id));
 
   const resetSession = () => {
-    sessionStorage.removeItem("biblio_docs");
+    sessionStorage.removeItem("source_engine_docs");
     // When session is reset, we only keep persistent items if any existed, 
     // but the user said "Standard storage is not persistent", so we clear everything or reset to samples.
     // Let's clear everything to satisfy "does not show when I reset the session".

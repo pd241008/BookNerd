@@ -1,7 +1,7 @@
 # Variables
 BACKEND_DIR = backend
 FRONTEND_DIR = frontend
-SCALA_DIR = biblio-source-engine
+SCALA_DIR = source_engine
 
 .PHONY: help fe be scala dev
 

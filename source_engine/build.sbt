@@ -1,10 +1,10 @@
 ThisBuild / scalaVersion := "3.3.3"
 ThisBuild / version      := "0.1.0"
-ThisBuild / organization := "com.biblio"
+ThisBuild / organization := "com.source_engine"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "biblio-source-aggregator",
+    name := "source_engine-source-aggregator",
     libraryDependencies ++= Seq(
       // HTTP Server
       "org.http4s"  %% "http4s-ember-server" % "0.23.27",
